@@ -1,0 +1,519 @@
+/* === General Styles === */
+:root {
+    --primary-color: #3498db; /* Blue */
+    --secondary-color: #2ecc71; /* Green */
+    --accent-color: #f39c12; /* Orange */
+    --text-color: #34495e; /* Dark Gray-Blue */
+    --heading-color: #2c3e50; /* Darker Blue-Gray */
+    --bg-color: #f4f7f9; /* Light Gray-Blue Background */
+    --card-bg-color: #ffffff;
+    --border-color: #dce4ec; /* Light border */
+    --input-border-color: #ccc;
+    --input-focus-border-color: var(--primary-color);
+    --success-color: #27ae60;
+    --success-bg-color: #eafaf1;
+    --success-border-color: #a9dfbf;
+    --error-color: #c0392b;
+    --error-bg-color: #fdedec;
+    --error-border-color: #f5b7b1;
+    --info-color: #2980b9;
+    --info-bg-color: #eaf5fa;
+    --info-border-color: #aed6f1;
+    --warning-color: #d35400;
+    --warning-bg-color: #fef5e7;
+    --warning-border-color: #f5cba7;
+    --disabled-color: #bdc3c7; /* Muted gray */
+    --link-color: var(--primary-color);
+    --link-hover-color: #2980b9; /* Darker blue */
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    margin: 0; /* Remove default margin */
+    padding: 20px; /* Add padding around content */
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    font-size: 16px; /* Base font size */
+}
+
+.container { /* Optional: Wrap content in a container */
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+
+h1, h2, h3, h4 {
+    color: var(--heading-color);
+    margin-top: 1.2em;
+    margin-bottom: 0.8em;
+    font-weight: 600;
+}
+h1 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 30px;
+    color: var(--primary-color);
+    font-weight: 700;
+    font-size: 2.5rem; /* Larger title */
+}
+h2 {
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 10px;
+    font-size: 1.8rem;
+    margin-top: 1.5em;
+}
+h3 {
+    color: var(--info-color); /* Use info blue */
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 8px;
+    margin-top: 2em; /* More space before H3 */
+    font-size: 1.5rem;
+}
+h4 {
+    color: var(--text-color);
+    margin-bottom: 1.2em; /* More space below H4 */
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+h5 { /* Style for sub-sections like in history */
+    margin-top: 25px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 6px;
+    font-size: 1.1rem;
+    color: #555;
+    font-weight: 600;
+}
+
+#login-form, #dashboard {
+    background-color: var(--card-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 30px;
+    margin: 25px auto;
+    max-width: 550px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+#dashboard {
+    max-width: 850px; /* Wider dashboard allowed */
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="date"],
+input[type="file"],
+select,
+textarea {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 18px;
+    border: 1px solid var(--input-border-color);
+    border-radius: 5px;
+    box-sizing: border-box; /* Include padding in width */
+    font-size: 1rem;
+    color: #333;
+    background-color: #fff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+input:focus, select:focus, textarea:focus {
+    border-color: var(--input-focus-border-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15); /* Subtle focus ring */
+}
+textarea {
+    min-height: 80px; /* Adjust as needed */
+    resize: vertical;
+}
+input[type="file"] {
+    padding: 8px 10px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+input[type="file"]::file-selector-button { /* Style the button part */
+    padding: 6px 12px;
+    border: 1px solid var(--input-border-color);
+    border-radius: 4px;
+    background-color: #eee;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-right: 10px;
+}
+input[type="file"]::file-selector-button:hover {
+    background-color: #ddd;
+}
+
+select {
+    /* Appearance for dropdown arrow */
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 15px top 50%;
+    background-size: 10px auto;
+    padding-right: 40px; /* Space for arrow */
+}
+
+button {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+    margin-right: 8px; /* Space between adjacent buttons */
+    margin-bottom: 8px; /* Space below buttons */
+    vertical-align: middle; /* Align better with inputs */
+}
+button:last-of-type { margin-right: 0; } /* No right margin on last button in a group */
+
+button:hover:not(:disabled) {
+    background-color: var(--link-hover-color); /* Darker blue */
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    transform: translateY(-1px);
+}
+button:active:not(:disabled) {
+    transform: translateY(0px);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+button:disabled {
+    background-color: var(--disabled-color);
+    cursor: not-allowed;
+    opacity: 0.7;
+    transform: none;
+    box-shadow: none;
+}
+/* Specific button types */
+button.logout-btn { background-color: var(--error-color); }
+button.logout-btn:hover:not(:disabled) { background-color: #a82c1f; }
+button.select-patient-btn { background-color: var(--secondary-color); padding: 4px 10px; font-size: 0.85rem;}
+button.select-patient-btn:hover:not(:disabled) { background-color: #27ae60; }
+
+hr {
+    border: 0;
+    height: 1px;
+    background-color: #e0e0e0;
+    margin: 35px 0;
+}
+
+/* === Message Styling === */
+p[id$="-msg"], p#dashboard-message, p#login-message, .temp-message {
+    padding: 12px 15px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    font-size: 0.95rem;
+    display: none; /* Hide by default, showMessage will display:block */
+    word-wrap: break-word; /* Prevent long messages breaking layout */
+}
+/* Ensure visible when class is added */
+p.error-message, p.success-message, p.info-message, p.warning-message {
+    display: block;
+}
+p:empty { display: none; } /* Hide if dynamically cleared */
+
+.error-message   { color: var(--error-color); background-color: var(--error-bg-color); border-color: var(--error-border-color); }
+.success-message { color: var(--success-color); background-color: var(--success-bg-color); border-color: var(--success-border-color); }
+.info-message    { color: var(--info-color); background-color: var(--info-bg-color); border-color: var(--info-border-color); }
+.warning-message { color: var(--warning-color); background-color: var(--warning-bg-color); border-color: var(--warning-border-color); }
+
+/* Temp messages inline with report links */
+.temp-message {
+    display: inline; /* Display inline */
+    padding: 2px 6px;
+    margin-left: 8px;
+    font-size: 0.85em;
+    border-radius: 3px;
+}
+.temp-message.info-message { /* Specific styling for inline info */
+     background-color: var(--info-bg-color);
+     border: none;
+     color: var(--info-color);
+}
+.temp-message.error-message { /* Specific styling for inline error */
+     background-color: var(--error-bg-color);
+     border: none;
+     color: var(--error-color);
+     font-weight: bold;
+}
+
+
+/* === Search & Display Sections === */
+.action-section {
+    margin-bottom: 30px;
+    padding: 25px;
+    border: 1px solid #e0e7ee;
+    border-radius: 6px;
+    background-color: var(--card-bg-color);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+.action-section h4 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 12px;
+    color: var(--primary-color);
+}
+/* Selected Patient Display */
+.selected-patient-info {
+    margin: 10px 0 20px 0;
+    font-size: 1rem;
+    font-weight: 500;
+}
+.selected-patient-info b {
+    display: inline-block;
+    min-width: 130px; /* Align labels */
+    margin-right: 8px;
+    font-weight: 600;
+    color: #555;
+}
+.selected-patient-info span { color: var(--text-color); }
+.selected-patient-info span:empty::before { content: 'None Selected'; color: #888; font-style: italic; }
+
+
+.search-results {
+    border: 1px solid #dde;
+    margin-top: 8px;
+    margin-bottom: 18px;
+    max-height: 200px; /* Taller results box */
+    overflow-y: auto;
+    padding: 5px;
+    background-color: #fcfdff;
+    border-radius: 4px;
+}
+.search-results ul { list-style: none; padding: 0; margin: 0; }
+.search-results li {
+    padding: 10px 12px;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;
+}
+.search-results li:last-child { border-bottom: none; }
+.search-results li span { flex-grow: 1; margin-right: 10px; color: var(--text-color); }
+.search-results button { /* Already styled as select-patient-btn */
+    margin-left: 10px;
+    flex-shrink: 0; /* Prevent button shrinking */
+}
+
+
+/* History, Prescription Display */
+#patient-history-display,
+#pharmacist-prescription-display,
+#all-users-display {
+    background-color: #f8fafd;
+    border: 1px solid #e0e7ee;
+    padding: 20px;
+    margin-top: 20px; /* Consistent spacing */
+    border-radius: 6px;
+    min-height: 100px; /* Min height */
+    max-height: 600px; /* Allow more content */
+    overflow-y: auto;
+}
+#patient-history-display h4,
+#pharmacist-prescription-display h4,
+#all-users-display h5 { /* Target heading within these displays */
+    margin-top: 0;
+    color: var(--primary-color);
+    font-size: 1.3rem;
+    border-bottom: none; /* Remove default border if reusing h4 */
+}
+/* Styling for lists within history/prescriptions */
+.history-list {
+    padding-left: 20px;
+    list-style-type: none; /* Remove default bullets */
+    margin-top: 15px;
+}
+.history-list li {
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed #eee; /* Separator */
+    line-height: 1.5;
+}
+.history-list li:last-child { border-bottom: none; }
+.history-list strong { color: var(--heading-color); } /* Highlight key info */
+.history-list small {
+    color: #7f8c8d;
+    font-size: 0.85em;
+    display: block;
+    margin-top: 5px;
+}
+/* Report links in history */
+.report-link {
+    color: var(--link-color);
+    text-decoration: none;
+    margin-left: 8px;
+    font-weight: 500;
+    cursor: pointer;
+}
+.report-link:hover {
+    text-decoration: underline;
+    color: var(--link-hover-color);
+}
+
+/* User list */
+.user-list { list-style: none; padding-left: 0; }
+.user-list li { margin-bottom: 8px; padding: 6px 0; border-bottom: 1px dashed #eee; font-size: 0.95rem; }
+.user-list li:last-child { border-bottom: none; }
+.user-list strong { color: var(--heading-color); }
+
+/* Lab Tech Upload Sections */
+.upload-section { margin-bottom: 25px; padding-bottom: 25px; border-bottom: 1px solid #e5e5e5; }
+.upload-section:last-child { border-bottom: none; margin-bottom: 10px; }
+.upload-section label { margin-top: 15px; font-weight: 600; display: block; margin-bottom: 6px; }
+.upload-section input[type="text"] { margin-top: 0; margin-bottom: 10px; }
+.upload-section input[type="file"] { margin-top: 0; display: block; margin-bottom: 12px; }
+.upload-section button { margin-top: 8px; }
+
+/* === AI Assistant Styles === */
+.ai-assistant-section {
+    margin-top: 35px;
+    border: 1px solid var(--info-border-color);
+    border-radius: 8px; /* Slightly more rounded */
+    background-color: #fafdff; /* Lighter background */
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+    overflow: hidden; /* Keep children contained */
+}
+.ai-assistant-section h4 {
+    background-color: var(--info-bg-color);
+    padding: 14px 20px;
+    margin: 0;
+    border-bottom: 1px solid var(--info-border-color);
+    /* border-radius: 8px 8px 0 0; Remove top radius as it's handled by parent */
+    color: var(--info-color);
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+.ai-chat-display {
+    height: 380px; /* Taller chat window */
+    overflow-y: auto;
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--info-border-color);
+    background-color: var(--card-bg-color); /* White chat background */
+}
+/* Chat Message Bubbles */
+.chat-message { margin-bottom: 12px; }
+.chat-message span {
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 18px; /* Bubble shape */
+    max-width: 80%; /* Limit bubble width */
+    line-height: 1.4;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    word-wrap: break-word; /* Break long words */
+    white-space: pre-wrap; /* Respect newlines from AI */
+}
+.user-message { text-align: right; margin-left: 20%; }
+.user-message span {
+    background-color: #d1f2eb; /* Light teal */
+    color: #135e53;
+    border-radius: 18px 18px 5px 18px; /* User bubble pointing left */
+    text-align: left; /* Keep text left-aligned inside bubble */
+}
+.ai-message { text-align: left; margin-right: 20%; }
+.ai-message span {
+    background-color: #e8edf1; /* Light gray */
+    color: var(--text-color);
+    border-radius: 18px 18px 18px 5px; /* AI bubble pointing right */
+}
+/* Specific AI message types */
+.ai-thinking span {
+    font-style: italic;
+    color: #6c757d;
+    background-color: #f8f9fa !important;
+    box-shadow: none;
+    border: 1px dashed #ccc;
+    border-radius: 18px; /* Fully rounded thinking bubble */
+}
+.ai-error span {
+    background-color: var(--error-bg-color);
+    color: var(--error-color);
+    border: 1px solid var(--error-border-color);
+    font-weight: bold;
+}
+/* Image styling within AI chat */
+.ai-message span img.ai-generated-graph {
+    max-width: 100%; /* Fit container */
+    height: auto;
+    border: 1px solid #ccc;
+    margin-top: 8px;
+    display: block; /* Ensure block display */
+    cursor: pointer;
+    border-radius: 4px;
+}
+.ai-message span a { /* Style links within AI messages */
+    color: var(--link-color);
+    text-decoration: underline;
+}
+.ai-message span a:hover { color: var(--link-hover-color); }
+
+/* AI Input Area */
+.ai-chat-input {
+    display: flex;
+    padding: 15px 20px;
+    background-color: #f0f4f8; /* Slightly darker footer */
+    /* border-radius: 0 0 8px 8px; Handled by parent */
+    align-items: center;
+}
+.ai-chat-input input[type="text"] {
+    flex-grow: 1;
+    margin-bottom: 0; /* Remove margin */
+    border-radius: 20px 0 0 20px; /* Pill shape left */
+    border-right: none;
+    padding: 12px 18px;
+    font-size: 1rem;
+}
+.ai-chat-input button {
+    border-radius: 0 20px 20px 0; /* Pill shape right */
+    padding: 12px 18px;
+    background-color: var(--secondary-color); /* Green send button */
+    font-size: 1rem;
+    margin: 0; /* Remove default button margin */
+    flex-shrink: 0; /* Prevent shrinking */
+}
+.ai-chat-input button:hover:not(:disabled) { background-color: #27ae60; }
+.ai-chat-input input:focus {
+    box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.15); /* Green focus ring */
+    border-color: #aaa; /* Keep border subtle on focus inside input group */
+    z-index: 1; /* Ensure focus shadow is on top */
+    position: relative; /* Needed for z-index */
+}
+
+/* AI Status Text */
+.ai-status {
+    padding: 5px 20px 10px 20px; /* Padding below input */
+    font-size: 0.85em;
+    color: #6c757d;
+    min-height: 1.2em; /* Prevent layout shift */
+    text-align: right;
+    background-color: #f0f4f8; /* Match input background */
+}
+
+/* Responsive adjustments if needed */
+@media (max-width: 600px) {
+    body { padding: 10px; }
+    #login-form, #dashboard { padding: 20px; }
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.6rem; }
+    h3 { font-size: 1.3rem; }
+    .ai-chat-input { flex-direction: column; } /* Stack input and button */
+    .ai-chat-input input[type="text"] { border-radius: 20px; border-right: 1px solid var(--input-border-color); margin-bottom: 10px;}
+    .ai-chat-input button { border-radius: 20px; width: 100%; }
+    .chat-message span { max-width: 95%; } /* Allow slightly wider bubbles */
+    .user-message { margin-left: 5%; }
+    .ai-message { margin-right: 5%; }
+
+}

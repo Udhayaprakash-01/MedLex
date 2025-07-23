@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HospiSys - Management</title>
+    <!-- Link CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Link Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+</head>
+<body>
+
+    <h1>HospiSys - Hospital Management System</h1>
+
+    <!-- Login Form -->
+    <div id="login-form">
+        <h2>Login</h2>
+        <div>
+            <label for="role">Select Role:</label>
+            <select id="role">
+                <option value="">Loading roles...</option>
+                <!-- Options populated by script.js -->
+            </select>
+        </div>
+        <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" autocomplete="username">
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" autocomplete="current-password">
+        </div>
+        <!-- Remove onclick, event listener added in JS -->
+        <button>Login</button>
+        <p id="login-message"></p> <!-- For login status/errors -->
+    </div>
+
+    <!-- Main Dashboard Area (Initially Hidden) -->
+    <div id="dashboard" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+             <h2>Dashboard</h2>
+             <!-- Add logout button here -->
+             <button onclick="logout()" id="logout-btn" class="logout-btn">Logout</button> <!-- Added ID -->
+        </div>
+        <p id="dashboard-message"></p> <!-- For welcome/general messages -->
+        <hr>
+
+        <!-- ======================== -->
+        <!-- == Receptionist Actions == -->
+        <!-- ======================== -->
+        <div id="receptionist-actions" style="display: none;">
+            <h3>Receptionist Tasks</h3>
+            <!-- Create Patient Section -->
+            <div class="action-section">
+                <h4>Register New Patient</h4>
+                <label for="new-patient-id">Unique Patient ID (e.g., MRN):</label>
+                <input type="text" id="new-patient-id" placeholder="Unique Patient ID" required>
+                <label for="new-patient-name">Patient Full Name:</label>
+                <input type="text" id="new-patient-name" placeholder="Full Name" required>
+                <label for="new-patient-dob">Date of Birth:</label>
+                <input type="date" id="new-patient-dob">
+                <label for="new-patient-contact">Contact Info (Phone/Email):</label>
+                <input type="text" id="new-patient-contact" placeholder="Optional">
+                <button onclick="createPatient()">Register Patient</button>
+                <p id="receptionist-create-patient-msg"></p>
+            </div>
+            <hr>
+            <!-- Record Visit Section -->
+            <div class="action-section">
+                <h4>Record Patient Visit</h4>
+                 <label for="visit-search-patient">Search Existing Patient:</label>
+                 <input type="text" id="visit-search-patient" placeholder="Enter Patient ID or Name...">
+                 <button onclick="searchPatient('visit-search-patient', 'visit-search-results', 'selectPatientForVisit')">Search Patient</button>
+                 <div id="visit-search-results" class="search-results"></div>
+                 <p id="visit-search-results-msg"></p> <!-- Messages for search -->
+
+                 <div class="selected-patient-info"><b>Selected Patient:</b> <span id="visit-selected-patient-name"></span></div>
+                 <input type="hidden" id="visit-patient-id"> <!-- Hidden input to store selected patient ID -->
+
+                 <label for="visit-reason">Reason for Visit:</label>
+                 <textarea id="visit-reason" placeholder="Brief reason for the patient's visit... (Optional)"></textarea>
+                 <button onclick="recordVisit()" id="record-visit-btn" disabled>Record Visit</button>
+                 <p id="receptionist-record-visit-msg"></p> <!-- Messages for recording visit -->
+            </div>
+        </div>
+
+        <!-- ================== -->
+        <!-- == Doctor Actions == -->
+        <!-- ================== -->
+        <div id="doctor-actions" style="display: none;">
+            <h3>Doctor Tasks</h3>
+            <!-- View History & Select Patient Section -->
+            <div class="action-section">
+                <h4>Patient History & Prescription</h4>
+                 <label for="history-search-patient">Search Patient:</label>
+                 <input type="text" id="history-search-patient" placeholder="Enter Patient ID or Name...">
+                 <button onclick="searchPatient('history-search-patient', 'history-search-results', 'selectPatientForHistory')">Search Patient</button>
+                 <div id="history-search-results" class="search-results"></div>
+                 <p id="history-search-results-msg"></p>
+
+                 <div class="selected-patient-info"><b>Selected Patient:</b> <span id="history-selected-patient-name"></span></div>
+                 <input type="hidden" id="history-patient-id">
+
+                 <button onclick="viewPatientHistory()" id="view-history-btn" disabled>View Full History</button>
+                 <!-- History Display Area -->
+                 <div id="patient-history-display">
+                     <p class="info-message">Search for and select a patient above to view their history.</p>
+                 </div>
+            </div>
+            <hr>
+             <!-- Write Prescription Section -->
+             <div class="action-section">
+                 <h4>Write Prescription (for selected patient)</h4>
+                 <label for="prescription-medication">Medication:</label>
+                 <textarea id="prescription-medication" placeholder="Medication name, strength, form (e.g., Amoxicillin 500mg Capsules)" required></textarea>
+                 <label for="prescription-dosage">Dosage:</label>
+                 <input type="text" id="prescription-dosage" placeholder="e.g., Take 1 capsule 3 times daily">
+                 <label for="prescription-instructions">Instructions:</label>
+                 <textarea id="prescription-instructions" placeholder="e.g., Take with food for 7 days"></textarea>
+                 <button onclick="createPrescription()" id="create-prescription-btn" disabled>Create Prescription</button>
+                 <p id="doctor-prescription-msg"></p>
+            </div>
+            <hr>
+            <!-- AI Assistant Section for Doctor -->
+            <div class="ai-assistant-section">
+                <h4><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512" style="vertical-align: -0.125em; margin-right: 5px; fill: currentColor;"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M400 0H112C76.7 0 48 28.7 48 64v48H16c-8.8 0-16 7.2-16 16s7.2 16 16 16h32V384H16c-8.8 0-16 7.2-16 16s7.2 16 16 16h32v48c0 35.3 28.7 64 64 64h288c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64zM112 448c-17.7 0-32-14.3-32-32V400h64v16c0 8.8-7.2 16-16 16H112zm160-64c-8.8 0-16-7.2-16-16s7.2-16 16-16s16 7.2 16 16s-7.2 16-16 16zm0-96c-8.8 0-16-7.2-16-16s7.2-16 16-16s16 7.2 16 16s-7.2 16-16 16zm0-96c-8.8 0-16-7.2-16-16s7.2-16 16-16s16 7.2 16 16s-7.2 16-16 16zm112 192c-8.8 0-16-7.2-16-16s7.2-16 16-16s16 7.2 16 16s-7.2 16-16 16zm0-96c-8.8 0-16-7.2-16-16s7.2-16 16-16s16 7.2 16 16s-7.2 16-16 16zm0-96c-8.8 0-16-7.2-16-16s7.2-16 16-16s16 7.2 16 16s-7.2 16-16 16zm80 352c0 17.7-14.3 32-32 32H336c-8.8 0-16-7.2-16-16V400h64v16c0 17.7-14.3 32-32 32zM464 384H128V128h336V384z"/></svg> AI Assistant (Doctor)</h4>
+                <div id="doctor-ai-chat-display" class="ai-chat-display">
+                    <!-- Initial message added by JS -->
+                </div>
+                <div id="doctor-ai-status" class="ai-status"></div> <!-- Status line -->
+                <div class="ai-chat-input">
+                    <input type="text" id="doctor-ai-query" placeholder="Ask about patient history, visit counts, graphs..." aria-label="AI Query Input for Doctor">
+                    <!-- Button click listener added in JS -->
+                    <button id="send-doctor-ai">Send</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================ -->
+        <!-- == Lab Technician Actions == -->
+        <!-- ============================ -->
+        <div id="labtechnician-actions" style="display: none;">
+            <h3>Lab Technician Tasks</h3>
+            <!-- Select Patient Section -->
+            <div class="action-section">
+                <h4>Select Patient for Report Upload</h4>
+                 <label for="report-search-patient">Search Patient:</label>
+                 <input type="text" id="report-search-patient" placeholder="Enter Patient ID or Name...">
+                 <button onclick="searchPatient('report-search-patient', 'report-search-results', 'selectPatientForReport')">Search Patient</button>
+                 <div id="report-search-results" class="search-results"></div>
+                 <p id="report-search-results-msg"></p>
+
+                 <div class="selected-patient-info"><b>Selected Patient:</b> <span id="report-selected-patient-name"></span></div>
+                 <input type="hidden" id="report-patient-id">
+                 <p id="labtech-selection-msg"></p> <!-- Message for selection status -->
+            </div>
+            <hr>
+            <!-- Upload Reports Section (Initially hidden) -->
+            <div class="action-section" id="labtech-upload-options" style="display: none;">
+                 <h4>Upload Reports (PDF Only)</h4>
+                 <p id="labtech-upload-msg"></p> <!-- General message area for all uploads -->
+
+                 <!-- Scan Report Upload -->
+                 <div class="upload-section">
+                     <label for="scan-report-file">1. Imaging Scan Report (CT, MRI, X-Ray, etc.):</label>
+                     <input type="file" id="scan-report-file" accept=".pdf"> <!-- Accept only PDF -->
+                     <button onclick="uploadReport('Scan Report', 'scan-report-file')" class="labtech-upload-btn" disabled>Upload Scan Report</button>
+                 </div>
+
+                 <!-- Blood Test Report Upload -->
+                 <div class="upload-section">
+                     <label for="blood-test-file">2. Blood Test Results:</label>
+                     <input type="file" id="blood-test-file" accept=".pdf">
+                     <button onclick="uploadReport('Blood Test Report', 'blood-test-file')" class="labtech-upload-btn" disabled>Upload Blood Test</button>
+                 </div>
+
+                 <!-- Other Document Upload -->
+                 <div class="upload-section">
+                     <label for="other-report-type">3. Other Report/Document:</label>
+                     <input type="text" id="other-report-type" placeholder="Specify Document Type (e.g., Biopsy Result)" required>
+                     <label for="other-report-file">Select PDF File:</label>
+                     <input type="file" id="other-report-file" accept=".pdf">
+                     <!-- Use file input ID for 'Other' type button logic -->
+                     <button onclick="uploadReport('Other', 'other-report-file')" class="labtech-upload-btn" disabled>Upload Other Document</button>
+                 </div>
+            </div>
+        </div>
+
+        <!-- ====================== -->
+        <!-- == Pharmacist Actions == -->
+        <!-- ====================== -->
+        <div id="pharmacist-actions" style="display: none;">
+            <h3>Pharmacist Tasks</h3>
+            <div class="action-section">
+                <h4>View Patient Prescriptions</h4>
+                <label for="pharma-search-patient">Search Patient:</label>
+                <input type="text" id="pharma-search-patient" placeholder="Enter Patient ID or Name...">
+                <button onclick="searchPatient('pharma-search-patient', 'pharma-search-results', 'selectPatientForPrescriptions')">Search Patient</button>
+                <div id="pharma-search-results" class="search-results"></div>
+                <p id="pharma-search-results-msg"></p>
+
+                <div class="selected-patient-info"><b>Selected Patient:</b> <span id="pharma-selected-patient-name"></span></div>
+                <input type="hidden" id="pharma-patient-id">
+
+                <button onclick="viewPatientPrescriptions()" id="view-prescriptions-btn" disabled>View Prescriptions</button>
+                <p id="pharmacist-view-msg"></p> <!-- Status for viewing action -->
+                <!-- Prescription Display Area -->
+                <div id="pharmacist-prescription-display">
+                    <p class="info-message">Search for and select a patient to view their prescriptions.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ====================== -->
+        <!-- == Superadmin Actions == -->
+        <!-- ====================== -->
+        <div id="superadmin-actions" style="display: none;">
+            <h3>Superadmin Overview & Tools</h3>
+             <!-- View Users Section -->
+            <div class="action-section">
+                 <h4>System Users</h4>
+                 <p class="info-message">View all registered users in the system.</p>
+                 <button onclick="fetchAllUsers()">View All System Users</button>
+                 <div id="all-users-display">
+                     <p class="info-message">Click the button above to load the user list.</p>
+                 </div>
+            </div>
+            <hr>
+             <!-- AI Assistant Section for Superadmin -->
+             <div class="ai-assistant-section">
+                 <h4><svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512" style="vertical-align: -0.125em; margin-right: 5px; fill: currentColor;"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M400 0H112C76.7 0 48 28.7 48 64v48H16c-8.8 0-16 7.2-16 16s7.2 16 16 16h32V384H16c-8.8 0-16 7.2-16 16s7.2 16 16 16h32v48c0 35.3 28.7 64 64 64h288c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64zM112 448c-17.7 0-32-14.3-32-32V400h64v16c0 8.8-7.2 16-16 16H112zm160-64c-8.8 0-16-7.2-16-16s7.2-16 16-16s16 7.2 16 16s-7.2 16-16 16zm0-96c-8.8 0-16-7.2-16-16s7.2-16 16-16s16 7.2 16 16s-7.2 16-16 16zm0-96c-8.8 0-16-7.2-16-16s7.2-16 16-16s16 7.2 16 16s-7.2 16-16 16zm112 192c-8.8 0-16-7.2-16-16s7.2-16 16-16s16 7.2 16 16s-7.2 16-16 16zm0-96c-8.8 0-16-7.2-16-16s7.2-16 16-16s16 7.2 16 16s-7.2 16-16 16zm0-96c-8.8 0-16-7.2-16-16s7.2-16 16-16s16 7.2 16 16s-7.2 16-16 16zm80 352c0 17.7-14.3 32-32 32H336c-8.8 0-16-7.2-16-16V400h64v16c0 17.7-14.3 32-32 32zM464 384H128V128h336V384z"/></svg> AI Assistant (Admin)</h4>
+                 <div id="superadmin-ai-chat-display" class="ai-chat-display">
+                     <!-- Initial message added by JS -->
+                 </div>
+                 <div id="superadmin-ai-status" class="ai-status"></div> <!-- Status line -->
+                 <div class="ai-chat-input">
+                     <input type="text" id="superadmin-ai-query" placeholder="Ask about patients, visit counts, graphs..." aria-label="AI Query Input for Superadmin">
+                     <!-- Button click listener added in JS -->
+                      <button id="send-superadmin-ai">Send</button>
+                 </div>
+             </div>
+        </div>
+
+    </div> <!-- End Dashboard -->
+
+    <!-- Load JavaScript at the end -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>
